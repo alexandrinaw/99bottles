@@ -1,0 +1,12 @@
+<section>
+    <div class="jumbotron">
+        {% if not data.signed_in %}
+          <h2>Welcome!</h2>
+          <p>
+            Please log into your Venmo account to continue.
+          </p>
+            <button class="btn btn-primary navbar-right" style="background-color:#3D95CE"><a style="color:#fff" href="https://api.venmo.com/v1/oauth/authorize?client_id={{data.consumer_id}}&scope=make_payments,access_profile&response_type=code">Log in to Venmo</a></button>
+          <a href='skip_venmo_login'>Don't have Venmo? Click here.</a>
+        {% endif %}
+    </div>
+</section>

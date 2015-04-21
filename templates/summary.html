@@ -1,0 +1,52 @@
+<section>
+    <div class="jumbotron">
+        {% if not data.hs_login and not data.signed_in %}
+          <h2>Welcome!</h2>
+          <p>To exchange money for a beverage, please log in to your Venmo Account.</p>
+          <p>To view the HSBF Venmo Balance or to be reimbursed for restocking the fridge, please log in to your Hacker School account.</p>
+        {% endif %}
+
+        {% if data.hs_login and data.hs_login.user %}
+          Welcome, {{data.hs_login.user}}!
+          <div>Beer Fridge Venmo Balance: $<span id="balance"></span></div>
+        {% endif %}
+
+        {% if data.signed_in %}
+          <br>
+          <button class="btn btn-primary" type="button" onClick="javascript:get_beer();">Get a beer</button>
+          <div id="get_a_beer_form" hidden>
+            <div id="beer_amount_input">
+              <select name = 'beer_amount' onchange='javascript:showBeerEmojis();'>
+                <option value = "1">1</option>
+                <option value = "2">2</option>
+                <option value = "3">3</option>
+                <option value = "4">4</option>
+                <option value = "5">5</option>
+                <option value = "6">6</option>
+                <option value = "7">7</option>
+                <option value = "8">8</option>
+                <option value = "9">9</option>
+                <option value = "10">10</option>
+              </select>
+              <!-- <input id = "beer_amount" type="number" class="form&#45;control" required placeholder="how many? ($3 each)"></input> -->
+            </div>
+              <button class="btn btn-danger" type="button" onClick="javascript:get_a_beer('{{data.access_token}}');">Pay!</button>
+          </div>
+          <br>
+          {% if data.hs_login and data.hs_login.user %}
+          <button class="btn btn-primary" type="button" onClick="javascript:get_reimbursed();">Get Reimbursed</button>
+          <div id="reimbursement_form" hidden>
+            <div id="reimbursement_note_input">
+                <input id="payment_note" type="text" class="form-control" required placeholder="add a note to your payment">
+            </div>
+            <div id="reimbursement_amount_input">
+                <input id="payment_amount" type="text" class="form-control" required placeholder="enter the payment amount! ">
+            </div>
+            <button class="btn btn-danger" hidden type="button" onClick="javascript:request_money('{{data.access_token}}');">Request Money from HSBF</button>
+          </div>
+          {% endif %}
+        {% endif %}
+
+        <div id='make_payment_response'></div>
+    </div>
+</section>

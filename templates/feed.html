@@ -1,0 +1,63 @@
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+    var socket = io.connect('http://' + document.domain + ':' + location.port);
+    socket.on('connect', function() {
+        socket.emit('my event', {data: 'I\'m connected!'});
+        console.log('yay');
+    });
+    socket.on('payment', function(msg) {
+        console.log(msg);
+        payment = msg['data'];
+        var actor = payment['actor']['display_name'];
+        var action = 'none';
+        if (payment['status'] === 'settled') {
+          if (payment['action'] === 'pay') {
+            action = 'paid';
+          } else if (payment['action'] === 'charge') {
+            action = 'received';
+          }
+        } else if (payment['status'] === 'pending') {
+          if (payment['action'] === 'charge') {
+            action = 'has requested';
+          }
+        } else if (payment['status'] === 'cancelled') {
+          if (payment['action'] === 'charge') {
+            action = 'was denied by'
+          }
+        }
+        var target = payment['target']['user']['display_name'];
+        var amount = payment['amount'];
+        var note = payment['note'];
+
+        var message = actor + ' ' + action + ' ' + target + ' ' + amount + ' for ' + note;
+
+        $('#payments').prepend('<li>' + message + '</li>');
+        console.log('ay');
+    });
+</script>
+<div class="jumbotron">
+  <ul id='payments'>
+    {% for payment in data.payments %}
+
+        <li>{{payment['actor']['display_name']}}
+
+              {% if payment['status'] == 'settled' %}
+                  {% if payment['action'] == 'pay' %}
+                      paid
+                  {% elif payment['action'] == 'charge' %}
+                      received
+                  {% endif %}
+              {% elif payment['status'] == 'pending' %}
+                  {% if payment['action'] == 'charge' %}
+                      has requested
+                  {% endif %}
+              {% elif payment['status'] == 'cancelled' %}
+                  {% if payment['action'] == 'charge' %}
+                      was denied by
+                  {% endif %}
+              {% endif %}
+
+          {{payment['target']['user']['display_name']}} ${{payment['amount']}} for {{payment['note']}}</li>
+    {% endfor %}
+  </ul>
+</div>

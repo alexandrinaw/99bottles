@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+    {% block content %}
+        {% if not data.hs_login and not data.skip_hs_login %}
+            {% include 'hs_login.html' %}
+        {% elif not data.signed_in and not data.skip_venmo_login %}
+            {% include 'venmo_login.html' %}
+        {% else %}
+            {% include 'summary.html' %}
+        {% endif %}
+    {% endblock %}

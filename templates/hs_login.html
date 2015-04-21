@@ -1,0 +1,12 @@
+<section>
+    <div class="jumbotron">
+        {% if not data.hs_login and not data.skip_hs_login %}
+          <h2>Welcome!</h2>
+          <p>
+            Please log into your Recurse Center account to continue.
+          </p>
+          <button class="btn btn-primary navbar-right" style="background-color:#61ae24"><a style="color:#fff" href="/hs_login">Log in to Recurse Center</a></button>
+          <a href='/skip_hs_login'>Not a Recurser? Continue Here.</a>
+        {% endif %}
+    </div>
+</section>

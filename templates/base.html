@@ -1,0 +1,29 @@
+<html>
+  <head>
+    <script src="https://codeorigin.jquery.com/jquery-2.0.3.min.js"></script>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/style.css" rel="stylesheet">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="/static/js/app.js"> </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body style="padding:25px">
+    <div class="container">
+      <div class="navbar navbar-default">
+          <a class="navbar-brand" href="/">{{ data.bottles }} Bottles of Beer</a>
+          {% if not data.signed_in %}
+            <button class="btn btn-primary navbar-right" style="background-color:#3D95CE"><a style="color:#fff" href="https://api.venmo.com/v1/oauth/authorize?client_id={{data.consumer_id}}&scope=make_payments,access_profile&response_type=code">Log in to Venmo</a></button>
+          {% else %}
+            <button class="btn btn-warning navbar-right" ><a style="color:#fff" href="logout_venmo">Log out of Venmo</a></button>
+          {% endif %}
+          {% if not data.hs_login %}
+            <button class="btn btn-primary navbar-right" style="background-color:#61ae24"><a style="color:#fff" href="/hs_login">Log in to Recurse Center</a></button>
+          {% else %}
+            <button class="btn btn-warning navbar-right" ><a style="color:#fff" href="logout_hs">Log out of Recurse Center</a></button>
+          {% endif %}
+      </div>
+      {% block content %}
+      {% endblock %}
+    </div>
+  </body>
+</html>
